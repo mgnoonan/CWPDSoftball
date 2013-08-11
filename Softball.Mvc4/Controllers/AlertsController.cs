@@ -88,7 +88,7 @@ namespace Softball.Mvc4.Controllers
 
             //if (!voice.LoggedIn)
             //    return;
-            var voice = new Jitbit.Utils.SharpGoogleVoice("mgnoonan.public@gmail.com", "");
+            var voice = new Jitbit.Utils.SharpGoogleVoice("", "");
 
 
             //
@@ -158,7 +158,7 @@ namespace Softball.Mvc4.Controllers
             string teamName = _repository.GetTeamName();
 
             EmailMessage Message = new EmailMessage();
-            Message.From.Email = "matt@noonan.dns2go.com";
+            Message.From.Email = "";
             Message.From.Name = teamName + " Update";
             Message.Subject = teamName + " Update";
 
@@ -180,7 +180,7 @@ namespace Softball.Mvc4.Controllers
             // Add body parts
             Message.BodyParts.Add(getTextMessageBody(includeFieldStatus, extraMessage), BodyPartFormat.Plain);
 
-            SMTP server = new SMTP("smtp.noonanconsultinginc.com");
+            SMTP server = new SMTP("");
             server.Send(Message);
         }
 
@@ -189,7 +189,7 @@ namespace Softball.Mvc4.Controllers
             string teamName = _repository.GetTeamName();
 
             EmailMessage Message = new EmailMessage();
-            Message.From.Email = "matt@noonan.dns2go.com";
+            Message.From.Email = "";
             Message.From.Name = teamName + " Update";
             Message.Subject = teamName + " Update";
 
@@ -208,7 +208,7 @@ namespace Softball.Mvc4.Controllers
             // Add body parts
             Message.BodyParts.Add(getTextMessageBody(includeFieldStatus, extraMessage), BodyPartFormat.Plain);
 
-            SMTP server = new SMTP("smtp.noonanconsultinginc.com");
+            SMTP server = new SMTP("");
             server.Send(Message);
         }
 
