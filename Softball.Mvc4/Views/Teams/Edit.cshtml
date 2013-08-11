@@ -1,0 +1,63 @@
+﻿@model Softball.Mvc4.Team
+
+@{
+    ViewBag.Title = DateTime.Now.Year + " Centerville Softball - Edit Team";
+}
+
+<h2>Edit Team</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+        
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.TeamID)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.TeamName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.TeamName)
+        @Html.ValidationMessageFor(model => model.TeamName)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Manager)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Manager)
+        @Html.ValidationMessageFor(model => model.Manager)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.HomeCell)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.HomeCell)
+        @Html.ValidationMessageFor(model => model.HomeCell)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.WorkCell)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.WorkCell)
+        @Html.ValidationMessageFor(model => model.WorkCell)
+    </div>
+
+    <div id="appSummary" style="margin-top: 24px;">
+        <div id="licenseOptions">
+            <a id="submitButton" class="purchase" href="#">Save</a>
+            @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "purchase" })
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#submitButton').click(function (event) {
+            event.preventDefault();
+            $(this).parents('form').submit();
+        });
+    });
+</script>

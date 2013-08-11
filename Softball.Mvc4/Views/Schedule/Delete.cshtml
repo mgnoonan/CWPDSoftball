@@ -1,0 +1,67 @@
+﻿@model Softball.Mvc4.Game
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Game</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.GameLocation)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GameLocation)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.GameDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GameDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AtHomeFirst)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AtHomeFirst)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.GameStatus)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GameStatus)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Game1Result)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Game1Result)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Game2Result)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Game2Result)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Opponent)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Opponent)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

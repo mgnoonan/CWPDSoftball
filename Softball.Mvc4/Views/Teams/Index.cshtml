@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Softball.Mvc4.Team>
+
+@{
+    ViewBag.Title = DateTime.Now.Year + " Centerville Softball - Teams";
+}
+
+	<div class="service"> 
+        <h2>Teams</h2>
+		<div class="section"> 
+    @foreach (var item in Model) {
+            <div style="float:left; width: 360px;">
+
+                <div class="details">
+                <strong>Team Name:</strong>
+                @Html.Raw(item.TeamName)
+                </div>
+
+                <div class="details">
+                <strong>Manager:</strong> 
+                @item.Manager
+                </div>
+
+                @if (Request.IsAuthenticated)
+                { 
+                    <div class="details">
+                    <strong>Home/Cell:</strong>
+                    <a href="@Html.Encode("tel:937" + item.HomeCell.Replace("-", ""))">
+                        @Html.Encode(item.HomeCell)
+                    </a>
+                    </div>
+                }
+                else
+                { 
+                    <div class="details">
+                    <span style="font-size: 9pt; color: #888;">Sign in to see additional information</span>
+                    </div>
+                }
+                
+			</div>
+            <div class="metroButton" style="margin-bottom: 12px;">
+                @Html.ActionLink("Update", "Edit", "Teams", routeValues: new { id = item.TeamID }, htmlAttributes: new { @class = "purchase" })
+            </div>
+            <div class="clear"></div>
+			<hr />
+    }
+		</div>
+	</div>

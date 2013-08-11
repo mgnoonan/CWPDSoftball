@@ -1,0 +1,64 @@
+﻿@model Softball.Mvc4.Game
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Game</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.GameLocation)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GameLocation)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.GameDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GameDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AtHomeFirst)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AtHomeFirst)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.GameStatus)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GameStatus)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Game1Result)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Game1Result)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Game2Result)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Game2Result)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Opponent)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Opponent)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.GameID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

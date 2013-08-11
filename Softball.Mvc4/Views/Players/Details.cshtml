@@ -1,0 +1,78 @@
+﻿@model Softball.Mvc4.Player
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Player</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FirstName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LastName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PhoneNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CellNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CellNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TextEmail)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TextEmail)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsEmailEnabled)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsEmailEnabled)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsTextEnabled)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsTextEnabled)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsActive)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsActive)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.PlayerID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,43 @@
+﻿@model Softball.Mvc4.Team
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Team</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TeamName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TeamName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Manager)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Manager)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.HomeCell)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HomeCell)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.WorkCell)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.WorkCell)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.TeamID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

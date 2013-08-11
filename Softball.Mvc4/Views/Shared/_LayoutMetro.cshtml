@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <link href="~/Content/Marketplace.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+        <link href='~/Content/fullcalendar.css' rel='stylesheet' type='text/css' />
+        <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/jquery-ui-1.8.18.js" type="text/javascript"></script>
+        <script src="~/Scripts/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/modernizr-2.5.3.js" type="text/javascript"></script>
+        <script src="~/Scripts/AjaxLogin.js" type="text/javascript"></script>
+        <script src="~/Scripts/Marketplace.js" type="text/javascript"></script>
+        <script src='~/Scripts/fullcalendar.js' type='text/javascript'></script>
+        <meta name="viewport" content="width=device-width">
+        <link rel="SHORTCUT ICON" href="http://softball.noonan.dns2go.com/favicon.ico" />
+    </head>
+    <body>
+        <div id="page" class="marketplace home">
+            <div id="masthead">
+                <div id="globalHeader">
+                    <a href="http://www.cwpd.org/field_status.shtml">CWPD Field Status</a> <span>
+                        |</span> <a href="http://www.cwpd.org/adultsoftballleague.html">CWPD Standings</a> <span>
+                        |</span> @DateTime.Now.ToLongDateString()
+                </div>
+                <div id="navHeader">
+                    <a id="logo" href="@Url.Action("Index", "Home")">
+                        <img src="@Url.Content("~/images/cwpd_logocolor_sm2.jpg")" alt="Windows Phone"></a>
+                    <div id="search">
+                        <!--form action="/en-US/search" method="get">
+                        <input id="searchInput" type="text" name="q" autocomplete="off" placeholdertext="search apps and games"
+                            class="placeholder">
+                        <input id="searchButton" type="image" src="/images/search.png" alt="Search">
+                        <div id="searchSuggestions0" class="searchSuggestions" style="left: 677px; top: 54px;
+                            width: 215px;">
+                            <ul>
+                            </ul>
+                        </div>
+                        </form-->
+                    </div>
+                    <div id="navItems">
+                        <ul>
+                        @{
+                            string controllername = this.ViewContext.RouteData.Values["controller"].ToString();
+                        }
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Schedule", "Index", "Schedule")</li>
+                            <li>@Html.ActionLink("Teams", "Index", "Teams")</li>
+                            <li>@Html.ActionLink("Players", "Index", "Players")</li>
+                            <li>@Html.ActionLink("Alerts", "Index", "Alerts")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                        </ul>
+                        <div id="signout" style="left: 799px;">
+                            @Html.Partial("_LogOnPartial")
+                        </div>
+                    </div>
+                    <!--ul id="subNavItems" class="marketplace">
+                        <li><a class="app" href="/en-US/apps">Apps</a></li>
+                        <li><a class="game" href="/en-US/games">Games</a></li>
+                    </ul-->
+                </div>
+            </div>
+            <div id="content">
+                <div id="landing">
+                    <h1>@DateTime.Now.Year Centerville Softball</h1>
+                    @RenderBody()
+                </div>
+                <div style="clear: both;">
+                </div>
+            </div>
+            <div id="footer">
+                <!--div class="siteNav">
+                    <a href="http://www.microsoft.com/windowsphone/en-US/sitemap.aspx">Site map</a>
+                    <span class="separator">|</span> <a href="http://www.microsoft.com/windowsphone/en-US/howto/contact-us.aspx">
+                        Contact us</a> <span class="separator">|</span> <a href="http://www.zune.net/legal/termsofservice.htm"
+                            target="_blank">Terms of Use</a> <span class="separator">|</span> <a href="http://go.microsoft.com/?linkId=4412893&amp;clcid=0x409"
+                                target="_blank">Trademarks</a> <span class="separator">|</span> <a href="http://go.microsoft.com/fwlink/?linkId=81184&amp;clcid=0x409"
+                                    target="_blank">Privacy Statement</a>
+                </div-->
+                <div class="logo">
+                    <!--a href="http://www.microsoft.com" target="_blank">
+                        <img alt="Microsoft" src="http://i.microsoft.com/global/windowsphone/en-US/PublishingImages/Common/wpcFooter/ms-logo_small.png">
+                    </a--><span>© @DateTime.Now.Year Noonan Consulting Inc.</span>
+                    <span>@ViewBag.AssemblyVersion - @ViewBag.MachineName</span>
+                </div>
+                <img id="t" src="/images/blank.png">
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Softball.Mvc4.Helpers.CheckBoxListInfo>
+@using Softball.Mvc4.Helpers
+
+@{
+    ViewBag.Title = DateTime.Now.Year + " Centerville Softball - Alerts";
+}
+
+    @Html.ValidationSummary("Invalid security code.")
+    @using (Html.BeginForm("SendAlerts", "Alerts"))
+    {
+    <div>
+        <div id="landing">
+            <div id="apps">
+                <h2>Send Alerts</h2>
+                <ul style="padding-bottom: 24px;">
+                    <li>@Html.CheckBox("chkUpdateFieldStatus", false) <label class="inline" for="chkUpdateFieldStatus">Update Field Status?</label></li>
+                    <li>@Html.CheckBox("chkIncludeFieldStatus", true) <label class="inline" for="chkIncludeFieldStatus">Include Field Status in alert?</label></li>
+                    <li>@Html.CheckBox("chkUseGoogleVoice", false) <label class="inline" for="chkUseGoogleVoice">Use Google Voice for SMS? (experimental)</label></li>
+                    <li style="padding: 24px 0 24px 0;">
+                        <label for="message">Additional Message:</label><br />
+                        @Html.TextArea("message", new { style = "width: 250px; height: 60px;" })
+                    </li>
+                </ul>
+                <div id="appSummary">
+                    <div id="licenseOptions">
+                        <a id="submitButton" class="purchase" href="#">Send Alerts</a>
+                        @Html.ActionLink("Update Field Status Only", "Update", routeValues: null, htmlAttributes: new { @class = "purchase" })
+                    </div>
+                </div>
+            </div>
+            <div id="games">
+                <h2>Players</h2>
+                <div id="rating">
+                    @Html.CheckBoxList("playerList", Model.ToList(), true)
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("input[name='playerList_all']").click(function () {
+            var checked_status = this.checked;
+            $("input[name='playerList']").each(function () {
+                this.checked = checked_status;
+            });
+        });
+        $('#submitButton').click(function (event) {
+            event.preventDefault();
+            $(this).parents('form').submit();
+        });
+    });
+</script>

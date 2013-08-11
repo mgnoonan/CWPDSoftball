@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Softball.Mvc4.Player>
+
+@{
+    ViewBag.Title = DateTime.Now.Year + " Centerville Softball - Players";
+}
+
+<h2>Players</h2>
+
+<table class="tablePadding">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Phone
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Roster
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName), @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @*string.Format("Home: {0}", item.PhoneNumber)<br />*@
+            @string.Format("Cell: {0}", item.CellNumber)
+        </td>
+        <td>
+            @*Html.DisplayFor(modelItem => item.Email)<br />*@
+            @Html.DisplayFor(modelItem => item.TextEmail)
+        </td>
+        <td style="text-align: center;">
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            <div class="metroButton" style="margin-bottom: 12px;">
+                @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.PlayerID }, htmlAttributes: new { style = "float: none;" })
+                @*Html.ActionLink("Details", "Details", routeValues: new { id = item.PlayerID }, htmlAttributes: new { style = "float: none;" })*@
+            </div>
+        </td>
+    </tr>
+}
+
+</table>
+<div class="metroButton" style="margin-top: 12px;">
+    @Html.ActionLink("Add Player", "Create", "Players", routeValues: null, htmlAttributes: null)
+</div>

@@ -1,0 +1,90 @@
+﻿@model Softball.Mvc4.Game
+
+@{
+    ViewBag.Title = DateTime.Now.Year + " Centerville Softball - Add Game";
+}
+
+<h2>Add Game</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Opponent)
+    </div>
+    <div id="cdOpponent" class="editor-field">
+        <select id="Opponent" name="Opponent"></select>
+        @Html.ValidationMessageFor(model => model.Opponent)
+    </div>
+
+    <div class="editor-label">
+        Field Name
+    </div>
+    <div class="editor-field">
+        <select id="GameLocation" name="GameLocation"></select>
+        @Html.ValidationMessageFor(model => model.GameLocation)
+    </div>
+
+    <div class="editor-label">
+        Date (all games start at 6:15pm)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.GameDate)
+        @Html.ValidationMessageFor(model => model.GameDate)
+    </div>
+
+    <div class="editor-label">
+        At Home First?
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.AtHomeFirst)
+        @Html.ValidationMessageFor(model => model.AtHomeFirst)
+    </div>
+
+    <div class="metroButton" style="margin-top: 24px;">
+        <a id="submitButton" href="#">Save</a>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#submitButton').click(function (event) {
+            event.preventDefault();
+            $(this).parents('form').submit();
+        });
+        $("#GameDate").datepicker();
+
+        var url = '/Schedule/TeamNames';
+        $.ajax({
+            url: url,
+            success: function (data) {
+                $.each(data, function (key, val) {
+                    $("#Opponent").get(0).options[$("#Opponent").get(0).options.length] = new Option(val, val);
+                });
+            },
+            error: function () {
+                alert('Error retrieving team names.');
+            },
+            datatype: 'json'
+        });
+
+        url = '/Schedule/FieldNames';
+        $.ajax({
+            url: url,
+            success: function (data) {
+                $.each(data, function (key, val) {
+                    $("#GameLocation").get(0).options[$("#GameLocation").get(0).options.length] = new Option(val, val);
+                });
+            },
+            error: function () {
+                alert('Error retrieving field names.');
+            },
+            datatype: 'json'
+        });
+    });
+</script>

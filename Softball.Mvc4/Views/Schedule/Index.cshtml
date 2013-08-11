@@ -1,0 +1,125 @@
+﻿@model IEnumerable<Softball.Mvc4.Game>
+
+@{
+    ViewBag.Title = DateTime.Now.Year + " Centerville Softball - Schedule";
+}
+
+<h2>Schedule and Results</h2>
+<ul class="appsMenu">
+    <li><a id="aCal" class="selected pivot" href="#">Calendar</a></li>
+    <li class="separator"></li>
+    <li><a id="aList" class="pivot" href="#">List</a></li>
+    <!--li class="last"><a href="/en-US/games">All</a></li-->
+</ul>
+<div class="service"> 
+    <div id="cdCalendar">
+        <ul style="padding-bottom: 12px;">
+            <li>Click or copy this link to add the schedule to your Outlook, Google Calendar, tablet or mobile device:<br />
+                <a href="webcals://calendars.office.microsoft.com/pubcalstorage/b74hvpdz2226179/2012_Centerville_Softball_Calendar.ics">webcals://calendars.office.microsoft.com/pubcalstorage/b74hvpdz2226179/2012_Centerville_Softball_Calendar.ics</a>
+            </li>
+        </ul>
+        <div id='calendar'></div>
+    </div>
+	<div id="cdList" class="section" style="display: none;"> 
+    @foreach (var item in Model)
+    { 
+        string suffix = "";
+        switch (item.GameDate.Value.Day)
+        {
+            case 1:
+            case 21:
+            case 31:
+                suffix = "st";
+                break;
+
+            case 2:
+            case 22:
+                suffix = "nd";
+                break;
+
+            case 3:
+            case 23:
+                suffix = "nd";
+                break;
+                
+            default:
+                suffix = "th";
+                break;
+        }
+        <div style="float:left; width: 360px;">
+            
+            <div class="cssdate">
+	            <abbr title="@String.Format("{0:MMMM}", item.GameDate)">@String.Format("{0:MMM}", item.GameDate)</abbr> @String.Format("{0}", item.GameDate.Value.Day)<sup>@suffix</sup> <abbr>’@String.Format("{0:yy}", item.GameDate)</abbr>
+	            <sub>@String.Format("{0:h:mm tt}", item.GameDate)</sub>
+            </div>
+
+            <div class="details">
+            <h3>@Html.Raw(item.Opponent)</h3>
+            </div>
+
+            <div class="details">
+            <strong>Scheduled Date:</strong> 
+            @Html.Encode(String.Format("{0:MM/dd/yyyy @ h:mm tt}", item.GameDate))
+            </div>
+
+            <div class="details">
+            <strong>Location:</strong>
+            @Html.Encode(item.GameLocation)
+            </div>
+
+            @if (!string.IsNullOrEmpty(item.Game1Result))
+            {
+            <div class="details">
+            <strong>Result:</strong>
+            @Html.Encode(item.Game1Result) / @Html.Encode(item.Game2Result)
+            </div>
+            }
+                
+		</div>
+        if (string.IsNullOrWhiteSpace(item.Game1Result) && item.GameDate <= DateTime.Now)
+        { 
+        <div id="appSummary" style="float:left;margin-left: 96px;">
+            <div id="licenseOptions">
+                @Html.ActionLink("Update", "Edit", "Schedule", routeValues: new { id = item.GameID }, htmlAttributes: new { @class = "purchase" })
+            </div>
+        </div>
+        }
+        <div class="clear"></div>
+		<hr />
+    }
+	</div>
+</div>
+<div class="metroButton">
+    @Html.ActionLink("Add Game", "Create", "Schedule", routeValues: null, htmlAttributes: null)
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    // page is now ready, initialize the calendar...
+    $("#aCal").click(function (e) {
+        e.preventDefault();
+        $("#aCal").addClass("selected");
+        $("#aList").removeClass("selected");
+        $("#cdCalendar").show()
+        $("#cdList").hide()
+    });
+    $("#aList").click(function (e) {
+        e.preventDefault();
+        $("#aList").addClass("selected");
+        $("#aCal").removeClass("selected");
+        $("#cdCalendar").hide()
+        $("#cdList").show()
+    });
+
+    $('#calendar').fullCalendar({
+        // put your options and callbacks here
+        editable: false,
+        events: "/api/schedule",
+        eventColor: "#e51400"
+    })
+
+//    $("#cdCalendar").hide()
+//    $("#cdList").show()
+
+});
+</script>

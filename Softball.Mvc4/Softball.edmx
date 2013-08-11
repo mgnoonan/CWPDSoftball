@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SoftballModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="SoftballModelStoreContainer">
+          <EntitySet Name="Game" EntityType="SoftballModel.Store.Game" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Player" EntityType="SoftballModel.Store.Player" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Schedule" EntityType="SoftballModel.Store.Schedule" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Team" EntityType="SoftballModel.Store.Team" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ScheduleDetailView" EntityType="SoftballModel.Store.ScheduleDetailView" store:Type="Views" store:Schema="dbo" store:Name="ScheduleDetailView" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+            <DefiningQuery>SELECT 
+      [ScheduleDetailView].[ScheduleID] AS [ScheduleID], 
+      [ScheduleDetailView].[ScheduleDate] AS [ScheduleDate], 
+      [ScheduleDetailView].[Location] AS [Location], 
+      [ScheduleDetailView].[HomeTeam] AS [HomeTeam], 
+      [ScheduleDetailView].[HomeManager] AS [HomeManager], 
+      [ScheduleDetailView].[AwayTeam] AS [AwayTeam], 
+      [ScheduleDetailView].[AwayManager] AS [AwayManager]
+      FROM [dbo].[ScheduleDetailView] AS [ScheduleDetailView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="WonLostDetailView" EntityType="SoftballModel.Store.WonLostDetailView" store:Type="Views" store:Schema="dbo" store:Name="WonLostDetailView" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+            <DefiningQuery>SELECT 
+      [WonLostDetailView].[Loss1] AS [Loss1], 
+      [WonLostDetailView].[Win1] AS [Win1], 
+      [WonLostDetailView].[Loss2] AS [Loss2], 
+      [WonLostDetailView].[Win2] AS [Win2], 
+      [WonLostDetailView].[Year] AS [Year]
+      FROM [dbo].[WonLostDetailView] AS [WonLostDetailView]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Schedule_Team" Association="SoftballModel.Store.FK_Schedule_Team">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Team1" Association="SoftballModel.Store.FK_Schedule_Team1">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="GameID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GameLocation" Type="varchar" MaxLength="50" />
+          <Property Name="GameDate" Type="datetime" />
+          <Property Name="AtHomeFirst" Type="bit" Nullable="false" />
+          <Property Name="GameStatus" Type="varchar" MaxLength="50" />
+          <Property Name="Game1Result" Type="varchar" MaxLength="3" />
+          <Property Name="Game2Result" Type="varchar" MaxLength="3" />
+          <Property Name="Opponent" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
+          <Property Name="CellNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="TextEmail" Type="varchar" MaxLength="50" />
+          <Property Name="IsEmailEnabled" Type="bit" Nullable="false" />
+          <Property Name="IsTextEnabled" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleDate" Type="datetime" />
+          <Property Name="HomeTeam" Type="int" />
+          <Property Name="AwayTeam" Type="int" />
+          <Property Name="Location" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TeamName" Type="varchar" MaxLength="50" />
+          <Property Name="Manager" Type="varchar" MaxLength="50" />
+          <Property Name="HomeCell" Type="varchar" MaxLength="50" />
+          <Property Name="WorkCell" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'Softball.dbo.ScheduleDetailView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="ScheduleDetailView">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="int" Nullable="false" />
+          <Property Name="ScheduleDate" Type="datetime" />
+          <Property Name="Location" Type="varchar" MaxLength="50" />
+          <Property Name="HomeTeam" Type="varchar" MaxLength="50" />
+          <Property Name="HomeManager" Type="varchar" MaxLength="50" />
+          <Property Name="AwayTeam" Type="varchar" MaxLength="50" />
+          <Property Name="AwayManager" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'Softball.dbo.WonLostDetailView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="WonLostDetailView">
+          <Key>
+            <PropertyRef Name="Loss1" />
+            <PropertyRef Name="Win1" />
+            <PropertyRef Name="Loss2" />
+            <PropertyRef Name="Win2" />
+          </Key>
+          <Property Name="Loss1" Type="int" Nullable="false" />
+          <Property Name="Win1" Type="int" Nullable="false" />
+          <Property Name="Loss2" Type="int" Nullable="false" />
+          <Property Name="Win2" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <Association Name="FK_Schedule_Team">
+          <End Role="Team" Type="SoftballModel.Store.Team" Multiplicity="0..1" />
+          <End Role="Schedule" Type="SoftballModel.Store.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="HomeTeam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Team1">
+          <End Role="Team" Type="SoftballModel.Store.Team" Multiplicity="0..1" />
+          <End Role="Schedule" Type="SoftballModel.Store.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="HomeTeam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SoftballModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="SoftballEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="Games" EntityType="SoftballModel.Game" />
+          <EntitySet Name="Players" EntityType="SoftballModel.Player" />
+          <EntitySet Name="Schedules" EntityType="SoftballModel.Schedule" />
+          <EntitySet Name="Teams" EntityType="SoftballModel.Team" />
+          <EntitySet Name="ScheduleDetailViews" EntityType="SoftballModel.ScheduleDetailView" />
+          <AssociationSet Name="FK_Schedule_Team" Association="SoftballModel.FK_Schedule_Team">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Team1" Association="SoftballModel.FK_Schedule_Team1">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+          <EntitySet Name="WonLostDetailViews" EntityType="SoftballModel.WonLostDetailView" />
+        </EntityContainer>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="GameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="GameLocation" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="GameDate" Type="DateTime" />
+          <Property Name="AtHomeFirst" Type="Boolean" Nullable="false" />
+          <Property Name="GameStatus" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Game1Result" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Name="Game2Result" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Name="Opponent" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="FirstName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CellNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="TextEmail" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsEmailEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="IsTextEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="ScheduleDate" Type="DateTime" />
+          <Property Name="HomeTeam" Type="Int32" />
+          <Property Name="AwayTeam" Type="Int32" />
+          <Property Name="Location" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Team" Relationship="SoftballModel.FK_Schedule_Team" FromRole="Schedule" ToRole="Team" />
+          <NavigationProperty Name="Team1" Relationship="SoftballModel.FK_Schedule_Team1" FromRole="Schedule" ToRole="Team" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="TeamName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Manager" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="HomeCell" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="WorkCell" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Schedules" Relationship="SoftballModel.FK_Schedule_Team" FromRole="Team" ToRole="Schedule" />
+          <NavigationProperty Name="Schedules1" Relationship="SoftballModel.FK_Schedule_Team1" FromRole="Team" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="ScheduleDetailView">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" />
+          <Property Name="ScheduleDate" Type="DateTime" />
+          <Property Name="Location" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="HomeTeam" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="HomeManager" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AwayTeam" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AwayManager" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Schedule_Team">
+          <End Role="Team" Type="SoftballModel.Team" Multiplicity="0..1" />
+          <End Role="Schedule" Type="SoftballModel.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="HomeTeam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Team1">
+          <End Role="Team" Type="SoftballModel.Team" Multiplicity="0..1" />
+          <End Role="Schedule" Type="SoftballModel.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="HomeTeam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WonLostDetailView">
+          <Key>
+            <PropertyRef Name="Loss1" />
+            <PropertyRef Name="Win1" />
+            <PropertyRef Name="Loss2" />
+            <PropertyRef Name="Win2" />
+          </Key>
+          <Property Type="Int32" Name="Loss1" Nullable="false" />
+          <Property Type="Int32" Name="Win1" Nullable="false" />
+          <Property Type="Int32" Name="Loss2" Nullable="false" />
+          <Property Type="Int32" Name="Win2" Nullable="false" />
+          <Property Type="Int32" Name="Year" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SoftballModelStoreContainer" CdmEntityContainer="SoftballEntities">
+          <EntitySetMapping Name="Games"><EntityTypeMapping TypeName="SoftballModel.Game"><MappingFragment StoreEntitySet="Game">
+            <ScalarProperty Name="GameID" ColumnName="GameID" />
+            <ScalarProperty Name="GameLocation" ColumnName="GameLocation" />
+            <ScalarProperty Name="GameDate" ColumnName="GameDate" />
+            <ScalarProperty Name="AtHomeFirst" ColumnName="AtHomeFirst" />
+            <ScalarProperty Name="GameStatus" ColumnName="GameStatus" />
+            <ScalarProperty Name="Game1Result" ColumnName="Game1Result" />
+            <ScalarProperty Name="Game2Result" ColumnName="Game2Result" />
+            <ScalarProperty Name="Opponent" ColumnName="Opponent" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Players"><EntityTypeMapping TypeName="SoftballModel.Player"><MappingFragment StoreEntitySet="Player">
+            <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+            <ScalarProperty Name="LastName" ColumnName="LastName" />
+            <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+            <ScalarProperty Name="CellNumber" ColumnName="CellNumber" />
+            <ScalarProperty Name="Email" ColumnName="Email" />
+            <ScalarProperty Name="TextEmail" ColumnName="TextEmail" />
+            <ScalarProperty Name="IsEmailEnabled" ColumnName="IsEmailEnabled" />
+            <ScalarProperty Name="IsTextEnabled" ColumnName="IsTextEnabled" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Schedules"><EntityTypeMapping TypeName="SoftballModel.Schedule"><MappingFragment StoreEntitySet="Schedule">
+            <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+            <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
+            <ScalarProperty Name="HomeTeam" ColumnName="HomeTeam" />
+            <ScalarProperty Name="AwayTeam" ColumnName="AwayTeam" />
+            <ScalarProperty Name="Location" ColumnName="Location" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Teams"><EntityTypeMapping TypeName="SoftballModel.Team"><MappingFragment StoreEntitySet="Team">
+            <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+            <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+            <ScalarProperty Name="Manager" ColumnName="Manager" />
+            <ScalarProperty Name="HomeCell" ColumnName="HomeCell" />
+            <ScalarProperty Name="WorkCell" ColumnName="WorkCell" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ScheduleDetailViews"><EntityTypeMapping TypeName="SoftballModel.ScheduleDetailView"><MappingFragment StoreEntitySet="ScheduleDetailView">
+            <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+            <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
+            <ScalarProperty Name="Location" ColumnName="Location" />
+            <ScalarProperty Name="HomeTeam" ColumnName="HomeTeam" />
+            <ScalarProperty Name="HomeManager" ColumnName="HomeManager" />
+            <ScalarProperty Name="AwayTeam" ColumnName="AwayTeam" />
+            <ScalarProperty Name="AwayManager" ColumnName="AwayManager" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="WonLostDetailViews">
+            <EntityTypeMapping TypeName="SoftballModel.WonLostDetailView">
+              <MappingFragment StoreEntitySet="WonLostDetailView">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Win2" ColumnName="Win2" />
+                <ScalarProperty Name="Loss2" ColumnName="Loss2" />
+                <ScalarProperty Name="Win1" ColumnName="Win1" />
+                <ScalarProperty Name="Loss1" ColumnName="Loss1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Softball">
+        <EntityTypeShape EntityType="SoftballModel.Game" Width="1.5" PointX="0.75" PointY="4.75" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoftballModel.Player" Width="1.5" PointX="2.75" PointY="4.75" Height="2.9417936197916656" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoftballModel.Schedule" Width="1.5" PointX="3" PointY="1" Height="2.3648893229166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoftballModel.Team" Width="1.5" PointX="0.75" PointY="1" Height="2.3648893229166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoftballModel.ScheduleDetailView" Width="1.5" PointX="4.75" PointY="4.75" Height="2.3648893229166656" IsExpanded="true" />
+        <AssociationConnector Association="SoftballModel.FK_Schedule_Team" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.1824446614583328" />
+          <ConnectorPoint PointX="3" PointY="2.1824446614583328" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoftballModel.FK_Schedule_Team1" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="1.5287223307291664" />
+          <ConnectorPoint PointX="3" PointY="1.5287223307291664" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="SoftballModel.WonLostDetailView" Width="1.5" PointX="5.375" PointY="0.75" Height="1.9802864583333331" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

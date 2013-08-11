@@ -1,0 +1,73 @@
+﻿@model Softball.Mvc4.Game
+@{
+    ViewBag.Title = DateTime.Now.Year + " Centerville Softball - Home";
+
+    var lastGame = ViewBag.LastGame as Softball.Mvc4.Game;
+    
+    //string header = "Harrigans vs. " + Model.Opponent;
+    //if ((bool)Model.AtHomeFirst)
+    //{
+    //    header = Model.Opponent + " vs. Harrigans";
+    //}
+}
+
+<div id="apps">
+    <!--h2>Harrigans Softball @ViewBag.Record</h2-->
+    <div>
+        <div class="service">
+            @if (Model == null)
+            {
+            <h2>No Games Scheduled</h2>
+            }
+            else
+            {
+            <h2>Next Game</h2>
+            <div class="product">
+                <span class="boldText">@(Model.Opponent + (Model.AtHomeFirst ? "" : "*")) vs. @(ViewBag.TeamName + (Model.AtHomeFirst ? "*" : ""))</span><br />
+                @String.Format("{0:MMMM d @ h:mm tt}", Model.GameDate)<br />
+                @Model.GameLocation<br />
+                <span class="boldText">Field Status:</span>&nbsp;'@(string.IsNullOrEmpty(Model.GameStatus) ? "UNKNOWN" : Html.Encode(Model.GameStatus))'<br />
+            </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="games">
+    <h2><a class="allTarget" href="http://www.cwpd.org/adultsoftballleague.html">Standings</a></h2>
+    <div class="service"><div id="waitDisplay"><img src="/images/spinner16.gif" /> Retrieving...</div></div>
+</div>
+<div id="featured">
+    <h2>@Html.ActionLink("Previous Result", "Index", "Schedule", routeValues: null, htmlAttributes: new { @class = "allTarget" })</h2>
+    <div class="service">
+        @if (lastGame != null)
+        {
+        <div class="product">
+            @String.Format("{0:MMMM d}", lastGame.GameDate) vs. <strong>@lastGame.Opponent</strong><br />
+            <span>Game 1:</span>&nbsp;@lastGame.Game1Result<br />
+            <span>Game 2:</span>&nbsp;@lastGame.Game2Result<br />
+            <span>@DateTime.Now.Year @ViewBag.TeamName Record:</span>&nbsp;@ViewBag.Record<br />
+        </div>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var url = '/Home/Standings';
+        $.ajax({
+            url: url,
+            success: function (data) {
+                var items = [];
+                $.each(data, function (key, val) {
+                    items.push('<li>' + val.Place + ') ' + val.TeamName + ' (' + val.Wins + '-' + val.Losses + ')</li>');
+                });
+                $('#waitDisplay').hide();
+                $('<ol/>', { html: items.join('') }).appendTo('#games div');
+            },
+            error: function () {
+                $('#waitDisplay').hide();
+                $('#games div').text('Error retrieving standings. Use the link at the top of the page.');
+            },
+            datatype: 'json'
+        });
+    });
+</script>
