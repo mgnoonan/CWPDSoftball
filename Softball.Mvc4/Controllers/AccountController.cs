@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Softball.Mvc4.Models;
+using System.Configuration;
 
 namespace Softball.Mvc4.Controllers
 {
@@ -12,7 +13,7 @@ namespace Softball.Mvc4.Controllers
     [Authorize]
     public class AccountController : _Controller
     {
-        private string _securityCode = "30050";
+        private string _securityCode = ConfigurationManager.AppSettings["SecurityCode"];
 
         //
         // GET: /Account/LogOn

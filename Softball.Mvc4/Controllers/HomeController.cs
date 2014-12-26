@@ -80,6 +80,8 @@ namespace Softball.Mvc4.Controllers
             foreach (var row in rows)
             {
                 var cols = row.SelectNodes("td");
+                if (cols.Count != 3)
+                    continue;
 
                 string teamName = cols[0].InnerText.Trim();
                 if (string.IsNullOrWhiteSpace(teamName) || rowNumber++ == 1)

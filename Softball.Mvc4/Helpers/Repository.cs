@@ -8,7 +8,7 @@ namespace Softball.Mvc4.Helpers
 {
     public class Repository : IRepository
     {
-        private SoftballEntities context = new SoftballEntities();
+        private Entities context = new Entities();
 
         public IQueryable<Game> FindGames()
         {
@@ -66,50 +66,47 @@ namespace Softball.Mvc4.Helpers
 
         public void DeleteObject(Game obj)
         {
-            context.Games.DeleteObject(obj);
+            context.Games.Remove(obj);
         }
 
         public void AddObject(Game obj)
         {
-            context.Games.AddObject(obj);
+            context.Games.Add(obj);
         }
 
         public void Attach(Game obj)
         {
-            context.Games.Attach(obj);
-            context.ObjectStateManager.ChangeObjectState(obj, EntityState.Modified);
+            context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
         }
 
         public void Attach(Team obj)
         {
-            context.Teams.Attach(obj);
-            context.ObjectStateManager.ChangeObjectState(obj, EntityState.Modified);
+            context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
         }
 
         public void DeleteObject(Team obj)
         {
-            context.Teams.DeleteObject(obj);
+            context.Teams.Remove(obj);
         }
 
         public void AddObject(Team obj)
         {
-            context.Teams.AddObject(obj);
+            context.Teams.Add(obj);
         }
 
         public void Attach(Player obj)
         {
-            context.Players.Attach(obj);
-            context.ObjectStateManager.ChangeObjectState(obj, EntityState.Modified);
+            context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
         }
 
         public void DeleteObject(Player obj)
         {
-            context.Players.DeleteObject(obj);
+            context.Players.Remove(obj);
         }
 
         public void AddObject(Player obj)
         {
-            context.Players.AddObject(obj);
+            context.Players.Add(obj);
         }
 
         public void Dispose()

@@ -132,7 +132,7 @@ namespace Softball.Mvc4.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+                    //Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
                 }
             }
 

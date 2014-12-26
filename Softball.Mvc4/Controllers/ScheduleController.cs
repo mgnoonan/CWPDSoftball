@@ -26,8 +26,8 @@ namespace Softball.Mvc4.Controllers
         public ViewResult Index()
         {
             var list = _repository.FindGames()
-                                  .Where(g => g.GameDate.Value.Year == targetDate.Year)
-                                  .OrderBy(g => g.GameDate)
+                                  //.Where(g => g.GameDate.Value.Year == targetDate.Year)
+                                  .OrderByDescending(g => g.GameDate)
                                   .ToList();
             
             return View(list);
