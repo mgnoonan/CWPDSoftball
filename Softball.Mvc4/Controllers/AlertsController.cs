@@ -95,7 +95,7 @@ namespace Softball.Mvc4.Controllers
             // Initialize working variables 
             //
 
-            int count = 0;
+            //int count = 0;
             StringBuilder sb = new StringBuilder();
             var message = getTextMessageBody(includeFieldStatus, extraMessage).Left(160);
 
@@ -130,7 +130,7 @@ namespace Softball.Mvc4.Controllers
                     string number = "+1" + p.TextEmail.Left(10);
                     voice.SendSMS(number, message);
                 }
-                catch (Exception ex)
+                catch
                 {
                     //Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
                 }
