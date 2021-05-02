@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
-
+using FluentEmail.Core;
+using FluentEmail.Core.Models;
+using FluentEmail.Smtp;
 using HtmlAgilityPack;
-using Quiksoft.FreeSMTP;
-
 using Softball.Mvc4.Helpers;
 using Softball.Mvc4.Models;
 using Softball.Mvc4.Utilities;
@@ -25,7 +23,7 @@ namespace Softball.Mvc4.Controllers
 
         public AlertsController() : this(new Repository()) { }
         public AlertsController(IRepository repository) { _repository = repository; }
-        
+
         //
         // GET: /Alerts/
 
@@ -60,10 +58,6 @@ namespace Softball.Mvc4.Controllers
             if (players.Count() > 0)
             {
                 SendEmail(chkIncludeFieldStatus, !chkUseGoogleVoice, message, players);
-                if (chkUseGoogleVoice)
-                {
-                    SendSMS(chkIncludeFieldStatus, message, players.Where(p => p.IsTextEnabled || p.PlayerID == 1));
-                }
             }
 
             return RedirectToAction("Index", "Home");
@@ -76,142 +70,29 @@ namespace Softball.Mvc4.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private void SendSMS(bool includeFieldStatus, string extraMessage, IEnumerable<Player> players)
-        {
-            //
-            // Login to Google Voice
-            //
-
-            //var voice = new Google.Voice.GoogleVoiceClient();
-            //voice.Login("mgnoonan.public@gmail.com", "");
-            ////voice.SendSMS("9376091518,9376095905", getTextMessageBody(chkIncludeFieldStatus, message).Left(140));
-
-            //if (!voice.LoggedIn)
-            //    return;
-            var voice = new Jitbit.Utils.SharpGoogleVoice("", "");
-
-
-            //
-            // Initialize working variables 
-            //
-
-            //int count = 0;
-            StringBuilder sb = new StringBuilder();
-            var message = getTextMessageBody(includeFieldStatus, extraMessage).Left(160);
-
-
-            //
-            // Send the messsage via Google Voice SMS service, up to 5 numbers at a time
-            //
-
-            foreach (Player p in players)
-            {
-                try
-                {
-                    //// Add the next number to the list
-                    //if (p.IsTextEnabled && p.TextEmail.Length > 0)
-                    //{
-                    //    sb.AppendFormat("+1{0},", p.TextEmail.Left(10));
-                    //    count++;
-                    //}
-
-                    //// Send the SMS when we hit the 5th phone number
-                    //if (count % 5 == 0 && !string.IsNullOrWhiteSpace(sb.ToString()))
-                    //{
-                    //    // Strip off the trailing comma
-                    //    sb.Length--;
-                    //    // Send the text message
-                    //    voice.SendSMS(sb.ToString(), message);
-                    //    // Clear out the list
-                    //    sb.Clear();
-                    //    // Pause for 5 seconds between calls (Google apparently throttles after 5 SMS messages)
-                    //    //System.Threading.Thread.Sleep(5000);
-                    //}
-                    string number = "+1" + p.TextEmail.Left(10);
-                    voice.SendSMS(number, message);
-                }
-                catch
-                {
-                    //Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
-                }
-            }
-
-
-            //
-            // Send SMS to any leftover numbers from the loop
-            //
-
-            //if (!string.IsNullOrWhiteSpace(sb.ToString()))
-            //{
-            //    // Strip off the trailing comma
-            //    sb.Length--;
-            //    // Send the text message
-            //    voice.SendSMS(sb.ToString(), message);
-            //}
-
-            //voice.Logout();
-            //voice = null;
-        }
-
         private void SendEmail(bool includeFieldStatus, bool includeSmsEmails, string extraMessage, IEnumerable<Player> players)
         {
             string teamName = _repository.GetTeamName();
-
-            EmailMessage Message = new EmailMessage();
-            Message.From.Email = "";
-            Message.From.Name = teamName + " Update";
-            Message.Subject = teamName + " Update";
+            var addresses = new List<Address>();
 
             foreach (Player p in players)
             {
-                if (p.PlayerID == 1)
-                    Message.Recipients.Add(p.Email, p.FirstName + " " + p.LastName, RecipientType.To);
+                addresses.Add(new Address { EmailAddress = p.Email, Name = p.FirstName + " " + p.LastName });
 
-                if (p.IsEmailEnabled && p.Email.Length > 0)
-                    Message.Recipients.Add(p.Email, p.FirstName + " " + p.LastName, RecipientType.BCC);
-
-                if (includeSmsEmails)
-                {
-                    if (p.IsTextEnabled && p.TextEmail.Length > 0)
-                        Message.Recipients.Add(p.TextEmail, string.Empty, RecipientType.BCC);
-                }
+                if (includeSmsEmails && p.IsTextEnabled && p.TextEmail.Length > 0)
+                    addresses.Add(new Address { EmailAddress = p.TextEmail });
             }
 
-            // Add body parts
-            Message.BodyParts.Add(getTextMessageBody(includeFieldStatus, extraMessage), BodyPartFormat.Plain);
+            // Using Smtp Sender package (or set using AddSmtpSender in services)
+            Email.DefaultSender = new SmtpSender();
 
-            SMTP server = new SMTP("");
-            server.Send(Message);
+            var email = Email
+                .From("")
+                .To(addresses)
+                .Subject(teamName + " Update")
+                .Body(getTextMessageBody(includeFieldStatus, extraMessage))
+                .Send();
         }
-
-        private void SendSmsEmail(bool includeFieldStatus, string extraMessage, IEnumerable<Player> players)
-        {
-            string teamName = _repository.GetTeamName();
-
-            EmailMessage Message = new EmailMessage();
-            Message.From.Email = "";
-            Message.From.Name = teamName + " Update";
-            Message.Subject = teamName + " Update";
-
-            foreach (Player p in players)
-            {
-                if (p.PlayerID == 1)
-                    Message.Recipients.Add(p.Email, p.FirstName + " " + p.LastName, RecipientType.To);
-
-                //if (p.IsEmailEnabled && p.Email.Length > 0)
-                //    Message.Recipients.Add(p.Email, p.FirstName + " " + p.LastName, RecipientType.BCC);
-
-                if (p.IsTextEnabled && p.TextEmail.Length > 0)
-                    Message.Recipients.Add(p.TextEmail, string.Empty, RecipientType.BCC);
-            }
-
-            // Add body parts
-            Message.BodyParts.Add(getTextMessageBody(includeFieldStatus, extraMessage), BodyPartFormat.Plain);
-
-            SMTP server = new SMTP("");
-            server.Send(Message);
-        }
-
         private string getTextMessageBody(bool includeGameStatus, string extraMessage)
         {
             string teamName = _repository.GetTeamName();
